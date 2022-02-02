@@ -1,0 +1,17 @@
+ <VirtualHost *:80>
+    DocumentRoot /var1/www/html/{{ uusername }}/
+    ServerName  {{ domain }}
+    ServerAlias www.{{ domain }}
+        ErrorLog logs/{{ domain }}-error_log
+    CustomLog logs/{{ domain }}-access_log combined
+    <FilesMatch \.php$>
+        SetHandler "proxy:unix:/var/run/php-fpm-{{ uusername }}.sock|fcgi://127.0.0.1:9000/"
+    </FilesMatch>
+   <IfModule mod_security2.c>
+     SecRuleRemoveById 981260 
+   </IfModule>
+    <Directory "/var1/www/html/{{ uusername }}/">
+           Options -Indexes +FollowSymLinks
+       AllowOverride All
+    </Directory>
+</VirtualHost>
